@@ -1,0 +1,8 @@
+libsf2.a
+loopdump
+loopinject
+out/*
+raw2wav
+sf2sdk
+sf2toraw
+xi2raw

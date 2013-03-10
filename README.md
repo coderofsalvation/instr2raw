@@ -20,7 +20,7 @@ Also, conversion tools usually cannot be used in batch, which can be a big pita.
   * convert the free legacy of public domain .xi and .sf2 instruments to newer formats
   * purely noncommercial
   * educational
-  * conversion of `royalty-`, `license-`, free and/or owned instruments
+  * conversion of `royalty-`, `license-free` and/or owned instruments
 
 ### How it works ###
 
@@ -66,9 +66,17 @@ or a whole collection at once:
     mkdir outdir
     ./convert dir myinstrumentdir outdir
 
+### NOTES ###
+
+For more verbose output run the `convert` command with '--verbose' as last argument.
+Also, if you feel up to it, turn on the DEBUG-flag in the Makefile for crazy verboseness =].
 `sf2toraw` and `xi2raw` also generate loopfiles which the shellscript `convert` uses for batchpurposes.
 But with little effort you can inject loopdata into aiff/wav-files yourself.
 You can just call the `loopinject` command manually and insert the looppoints.
+
+### Binaries ###
+
+Precompiled are available (fingers crossed!) on my blog (http://leon.vankammen.eu/tech/index.html)
 
 ### Limitations ###
 

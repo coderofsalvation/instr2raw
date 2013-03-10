@@ -1,5 +1,5 @@
 # comment/uncomment the line below to toggle between verbose/nonverbose information
-DEBUG=-DDEBUG_ENAB -DDEBUG
+#DEBUG=-DDEBUG_ENAB -DDEBUG
 SHELL=/bin/bash
 CFLAGS_SF2=-fpermissive $(DEBUG) -DCPP_MEMORY -I./include 
 all: xi2raw loopdump loopinject raw2wav sf2sdk libsf2.a sf2toraw
