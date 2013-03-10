@@ -1,0 +1,80 @@
+#!/bin/bash 
+
+verbose=0
+
+# <file.xi/file.sf2> <outdir>      <-- converts an .xi or .sf2 file to .raw & .wav
+instr2raw(){
+  filefull="$1"
+  dir=$(dirname "$1");
+  file=$(basename "$1");
+  outdir="$2"
+  [[ $verbose == 1 ]] && echo "[x] converting $filefull to .raw"
+  [[ "${file##*.}" == "sf2" ]] && ./sf2toraw "$filefull" "$outdir"
+  [[ "${file##*.}" == "xi" ]]  && ./xi2raw "$filefull" "$outdir"
+}
+
+# <dir-with-raw-files> <outdir>    <-- converts .raw files to wav (with loopstart/end)
+rawdir2wav(){
+  dir="$1"
+  outdir="$2"
+  i=1
+  find "$dir" -iname "*.raw*" | while read file; do 
+    [[ ! "${file##*.}" == "raw" ]] && continue;
+    filebase=$(basename "$file")
+    thedirname=$(dirname "$file")
+    [[ $verbose == 1 ]] && echo "[x] converting '$filebase' to .wav"
+    ./raw2wav "$file" 22050 1 "$outdir/$filebase.wav.tmp"
+    [[ $verbose == 1 ]] && echo "[x] converting '$filebase.wav' (normalizing)"
+    which sox &> /dev/null && [[ $verbose == 0 ]] && sox "$outdir/$filebase.wav.tmp" --norm "$outdir/$filebase.wav" &> /dev/null
+    which sox &> /dev/null && [[ $verbose == 1 ]] && sox "$outdir/$filebase.wav.tmp" --norm "$outdir/$filebase.wav" 
+    [[ $verbose == 1 ]] && echo "[x] converting '$filebase.wav' (injecting looppoints)"
+    rm "$outdir/$filebase.wav.tmp"
+    loopInject "$outdir/$filebase.wav"
+    [[ $verbose == 1 ]] && echo "--> done! ($i files processed)"
+    ((i=i+1))
+  done
+}
+
+# <file.wav/file.aiff>             <-- injects looppoints based on file.raw.txt 
+loopInject(){
+  file="$1"
+  loopfile=$(echo "$file" | sed 's/\.wav/\.txt/g' )
+  wavfile=$(echo "$loopfile" | sed 's/\.txt/\.wav/g' )
+  aifffile=$(echo "$loopfile" | sed 's/\.txt/\.aiff/g' )
+  audiofile=""
+  [[ -f "$loopfile" ]] && [[ $verbose == 1 ]] && (echo "[x] loopfile '$loopfile' found!" || echo "no loopfile '$loopfile' found")
+  [[ ! -f "$loopfile" ]] && return 0
+  [[ -f "$wavfile" ]] && audiofile="$wavfile"
+  [[ -f "$aifffile" ]] && audiofile="$aiffile"
+  loopstart=$(cat "$loopfile" | grep "loopstart" | sed 's/.*=//g' )
+  loopend=$(cat "$loopfile" | grep "loopend" | sed 's/.*=//g' )
+  samplerate=$(cat "$loopfile" | grep "samplerate" | sed 's/.*=//g' )
+  channels=$(cat "$loopfile" | grep "samplerate" | sed 's/.*=//g' )
+  ls -la "$audiofile"
+  ./loopinject "$audiofile" "$loopstart" "$loopend" "$audiofile.loop.wav"
+  mv "$audiofile.loop.wav" "$audiofile"
+  [[ $verbose == 1 ]] && ./loopdump "$audiofile"
+}
+
+# <indir> <outdir>                 <-- process all .xi and .sf2 in indir, and convert to wav/aiff
+dir(){
+  indir="$1"
+  outdir="$2"
+  find "$indir" -iname \*.xi -o -name \*.sf2 | while read file; do
+    instr2raw "$file" "$outdir" "$ext"
+  done
+  rawdir2wav "$outdir" "$outdir"
+}
+
+_usage(){
+  grep "^[^_].\+(){$" $0 | while read line; do
+    local cmd=$(echo "$line" | sed "s/(){//g")
+    local info=$(grep -C0 -A0 -B1 "$cmd(){" $0 | sed "N;s/\n.*//g" )
+    printf "    $0 %-20s %-40s\n" "$cmd" "$info" | grep "#"
+  done; echo "";
+}
+
+for i in "$@"; do 
+  echo "$i" | grep -q "verbose" && verbose=1; 
+done
+[[ -n "$1" ]] && "$@" || _usage
