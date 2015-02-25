@@ -8,6 +8,9 @@ clean:
 	rm -rf sf2sdk
 	rm xi2raw loopdump loopinject raw2wav sf2toraw libsf2.a
 
+install:
+	cp xi2raw loopdump loopinject raw2wav sf2toraw /usr/local/bin
+
 sf2toraw: libsf2.a sf2toraw.cpp
 	g++ -o sf2toraw sf2toraw.cpp  $(CFLAGS_SF2) -L. -lsf2
 

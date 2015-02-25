@@ -34,6 +34,11 @@ int main( int argc, char *argv[])
   SF_INFO      sfinfo ;
   int          readcount ;
 
+  if( argc < 2 ){
+    printf("Usage: loopdump <file.wav>\n");
+    exit(1);
+  }
+
   /* Here's where we open the input file. We pass sf_open the file name and
   ** a pointer to an SF_INFO struct.
   ** On successful open, sf_open returns a SNDFILE* pointer which is used
