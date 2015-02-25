@@ -1,3 +1,4 @@
+#include <string.h>
 
 void writeLoopFile( char *file, 
                     int loopstart,

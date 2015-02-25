@@ -1,4 +1,5 @@
-#include    <stdio.h>
+#include <stdio.h>
+#include <string.h>
 
 /* Include this header file defining functions in libsndfile. */
 #include    <sndfile.h>

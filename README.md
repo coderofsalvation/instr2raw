@@ -34,6 +34,7 @@ The shellscript 'convert' easifies batchprocessing of directories.
   * gnu compiler, make, unzip and wget
   * libsndfile library
   * sox library (optional, used for normalizing samples)
+  * libc6-dev-i386 package (on my ubuntu)
  
 ### Installation ###
 

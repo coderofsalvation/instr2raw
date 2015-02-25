@@ -1,24 +1,22 @@
 # comment/uncomment the line below to toggle between verbose/nonverbose information
 #DEBUG=-DDEBUG_ENAB -DDEBUG
 SHELL=/bin/bash
-CFLAGS_SF2=-fpermissive $(DEBUG) -DCPP_MEMORY -I./include 
+CFLAGS_SF2=-m32 -fpermissive $(DEBUG) -DCPP_MEMORY -I./include -I/usr/include/x86_64-linux-gnu/c++/4.8
 all: xi2raw loopdump loopinject raw2wav sf2sdk libsf2.a sf2toraw
 
 clean:
-	rm xi2raw loopdump loopinject raw2wav sf2toraw libsf2.a sf2sdk/obj/*
 	rm -rf sf2sdk
+	rm xi2raw loopdump loopinject raw2wav sf2toraw libsf2.a
 
 sf2toraw: libsf2.a sf2toraw.cpp
 	g++ -o sf2toraw sf2toraw.cpp  $(CFLAGS_SF2) -L. -lsf2
 
 sf2sdk:
 	@echo "[x] We are now going to download + build the creative soundfont sdk"
-	@echo "[x] (Creative labs insist in not redistributing this code directly, contact me if the following doesnt work)"
-	@read -p "press a key to continue.."
+	@echo -e "[x] (Initially Creative labs insisted in not redistributing this code directly,\n so this makefile used to download it during build.\n However as of 2015 the link died, so the zip is included in the repo now.\n\n contact maintainer when there's any problem with that)"
 	@[[ ! -d sf2sdk ]] && mkdir sf2sdk && mkdir sf2sdk/obj; cd sf2sdk;\
-	[[ ! -f enabler.zip ]] && wget http://connect.creativelabs.com/developer/SoundFont/enabler.zip;\
 	echo "[x] unzipping sdk";\
-	unzip enabler.zip | while read line; do printf .; done; echo "";\
+	unzip ../enabler.zip | while read line; do printf .; done; echo "";\
 	echo "[x] converting all uppercase (DOS)-style files to more nowadays lowercase-format";\
 	for f in `find .`; do mv -v $$f `echo $$f | tr '[A-Z]' '[a-z]'` &>/dev/null; done;\
 	for f in `find .`; do mv -v $$f `echo $$f | tr '[A-Z]' '[a-z]'` &>/dev/null; done;\

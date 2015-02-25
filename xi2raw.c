@@ -1,5 +1,6 @@
 
 #include    <stdio.h>
+#include    <string.h>
 #include    <unistd.h>
 
 /* Include this header file defining functions in libsndfile. */
