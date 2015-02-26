@@ -9,8 +9,8 @@ instr2raw(){
   file=$(basename "$1");
   outdir="$2"
   [[ $verbose == 1 ]] && echo "[x] converting $filefull to .raw"
-  [[ "${file##*.}" == "sf2" ]] && ./sf2toraw "$filefull" "$outdir"
-  [[ "${file##*.}" == "xi" ]]  && ./xi2raw "$filefull" "$outdir"
+  [[ "${file##*.}" == "sf2" ]] && sf2toraw "$filefull" "$outdir"
+  [[ "${file##*.}" == "xi" ]]  && xi2raw "$filefull" "$outdir"
 }
 
 # <dir-with-raw-files> <outdir>    <-- converts .raw files to wav (with loopstart/end)
@@ -23,7 +23,7 @@ rawdir2wav(){
     filebase=$(basename "$file")
     thedirname=$(dirname "$file")
     [[ $verbose == 1 ]] && echo "[x] converting '$filebase' to .wav"
-    ./raw2wav "$file" 22050 1 "$outdir/$filebase.wav.tmp"
+    raw2wav "$file" 22050 1 "$outdir/$filebase.wav.tmp"
     [[ $verbose == 1 ]] && echo "[x] converting '$filebase.wav' (normalizing)"
     which sox &> /dev/null && [[ $verbose == 0 ]] && sox "$outdir/$filebase.wav.tmp" --norm "$outdir/$filebase.wav" &> /dev/null
     which sox &> /dev/null && [[ $verbose == 1 ]] && sox "$outdir/$filebase.wav.tmp" --norm "$outdir/$filebase.wav" 
@@ -51,9 +51,9 @@ loopInject(){
   samplerate=$(cat "$loopfile" | grep "samplerate" | sed 's/.*=//g' )
   channels=$(cat "$loopfile" | grep "samplerate" | sed 's/.*=//g' )
   ls -la "$audiofile"
-  ./loopinject "$audiofile" "$loopstart" "$loopend" "$audiofile.loop.wav"
+  loopinject "$audiofile" "$loopstart" "$loopend" "$audiofile.loop.wav"
   mv "$audiofile.loop.wav" "$audiofile"
-  [[ $verbose == 1 ]] && ./loopdump "$audiofile"
+  [[ $verbose == 1 ]] && loopdump "$audiofile"
 }
 
 # <indir> <outdir>                 <-- process all .xi and .sf2 in indir, and convert to wav/aiff
