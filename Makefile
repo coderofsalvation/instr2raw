@@ -67,5 +67,5 @@ bin/loopinject: src/loopinject.c
 	gcc src/loopinject.c -o bin/loopinject -lsndfile 
 
 bin/sf2write: src/sf2write.cpp 
-	$(CPPC) $(CPPFLAGS) src/sf2write.cpp src/sf2write/sf2.cpp src/sf2write/midi.cpp -o bin/sf2write 
+	$(CPPC) $(CPPFLAGS) src/sf2write.cpp src/sf2write/sf2.cpp src/sf2write/midi.cpp -o bin/sf2write -lsndfile
 
