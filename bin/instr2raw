@@ -71,7 +71,7 @@ _usage(){
     local cmd=$(echo "$line" | sed "s/(){//g")
     local info=$(grep -C0 -A0 -B1 "$cmd(){" $0 | sed "N;s/\n.*//g" )
     printf "    $0 %-20s %-40s\n" "$cmd" "$info" | grep "#"
-  done; echo "";
+  done; echo -e "\n    related commands: instr2raw, loopdump, loopinject, raw2wav, sf2toraw, sf2write, xi2raw"
 }
 
 for i in "$@"; do 

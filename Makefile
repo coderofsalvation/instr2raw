@@ -14,7 +14,7 @@ clean:
 	rm bin/* src/libsf2.a
 
 install:
-	cp bin/* /usr/local/bin
+	@find bin -type f -executable -exec cp {} /usr/local/bin \;
 
 bin/sf2toraw: src/libsf2.a src/sf2toraw.cpp
 	g++ -o bin/sf2toraw src/sf2toraw.cpp  $(CFLAGS_SF2) -L. -Lsrc -lsf2 
