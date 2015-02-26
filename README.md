@@ -8,6 +8,60 @@ simple sourcecode which does this.
 
 Coder of Salvation (Leon van Kammen / BUGMENOTinfo@leon.vankammen.eu (remove BUGMENOT)
 
+### Usage ###
+
+    $ ./xi2raw 
+    Usage: xi2raw <infile.xi> <outfile.raw>
+
+    $ ./loopdump 
+    Usage: loopdump <file.wav>
+
+    $ ./loopinject 
+    Usage: loopinject <infile.wav|aiff> <loopstart> <loopend> <outfile.wav|aiff>
+
+    $ ./raw2wav 
+    Usage: raw2wavloop <rawfile> <samplerate> <channels> <outfile.wav>
+
+    $ ./sf2toraw 
+    Usage: sf2toraw <sf2file> <outdir>
+
+    $ ./sf2write 
+    Usage: sf2write <file.sf2> <file.wav> <index> <samplerate> <lokey> <hikey>  [loopstart] [loopstop]
+
+    Note: index starts with 0, define -1 for loopstart/loopstop to disable looping
+
+    $ ./instr2raw 
+        ./instr2raw instr2raw            # <file.xi/file.sf2> <outdir>      <-- converts an .xi or .sf2 file to .raw & .wav
+        ./instr2raw rawdir2wav           # <dir-with-raw-files> <outdir>    <-- converts .raw files to wav (with loopstart/end)
+        ./instr2raw loopInject           # <file.wav/file.aiff>             <-- injects looppoints based on file.raw.txt 
+        ./instr2raw dir                  # <indir> <outdir>                 <-- process all .xi and .sf2 in indir, and convert to wav/aiff
+
+        related commands: instr2raw, loopdump, loopinject, raw2wav, sf2toraw, sf2write, xi2raw
+
+conversion:
+
+    ./sf2toraw in/bass.sf2 outdir
+    ./xitoraw in/chord1.xi outdir
+
+inject loopppoints:
+
+    ./raw2wav out/chord1.raw out/chord1.wav
+    ./loopinject out/chord1.wav 100 200 out/chord1-looped.wav
+
+or to batch directories:
+
+    mkdir in out
+    # copy all your instrument files to directory 'in' 
+    ./convert instr2raw foo.xi out
+    ./convert instr2raw foo.sf2 out
+    ./convert rawdir2wav outdir
+
+or a whole collection at once:
+
+    mkdir outdir
+    ./convert dir myinstrumentdir outdir
+
+
 ### Problem ###
 
 There are many looped instruments out there (.xi/.sf2), and there are many software DAW's (cubase/ableton) and hardware tools
@@ -42,31 +96,6 @@ The shellscript 'convert' easifies batchprocessing of directories.
     cd instr2raw
     make all
  
-### Usage ###
-
-conversion:
-
-    ./sf2toraw in/bass.sf2 outdir
-    ./xitoraw in/chord1.xi outdir
-
-inject loopppoints:
-
-    ./raw2wav out/chord1.raw out/chord1.wav
-    ./loopinject out/chord1.wav 100 200 out/chord1-looped.wav
-
-or to batch directories:
-
-    mkdir in out
-    # copy all your instrument files to directory 'in' 
-    ./convert instr2raw foo.xi out
-    ./convert instr2raw foo.sf2 out
-    ./convert rawdir2wav outdir
-
-or a whole collection at once:
-
-    mkdir outdir
-    ./convert dir myinstrumentdir outdir
-
 ### NOTES ###
 
 For more verbose output run the `convert` command with '--verbose' as last argument.
