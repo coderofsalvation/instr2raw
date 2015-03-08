@@ -128,8 +128,8 @@ int main(int argc, char *argv[] ){
         char loopfile[255];
         sprintf(loopfile, "%s/%s.raw.txt",argv[2],bankNodes[i].pHydra->pSHdr[x].achSampleName );
         writeLoopFile( loopfile, 
-                       bankNodes[i].pHydra->pSHdr[x].dwStartloop,
-                       bankNodes[i].pHydra->pSHdr[x].dwEndloop,
+                       bankNodes[i].pHydra->pSHdr[x].dwStartloop - bankNodes[i].pHydra->pSHdr[x].dwStart,
+                       bankNodes[i].pHydra->pSHdr[x].dwEndloop - bankNodes[i].pHydra->pSHdr[x].dwStart,
                        bankNodes[i].pHydra->pSHdr[x].dwSampleRate,
                        1 );
         #ifdef DEBUG_ENAB

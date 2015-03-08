@@ -27,9 +27,9 @@ int main()
   sf.add_new_instrument("someinstr");
   
   sf.add_new_inst_bag();
+  sf.add_new_inst_generator(SFGenerator::keyRange, 0,80); // specify key range
   sf.add_new_inst_generator(SFGenerator::sampleModes, 1); //enable looping
   sf.add_new_inst_generator(SFGenerator::sampleID, 0); // link someinstr to sample 0
-  sf.add_new_inst_generator(SFGenerator::keyRange, 0,80); // specify key range
   
   sf.add_new_inst_bag();
   sf.add_new_inst_generator(SFGenerator::sampleModes, 1); //enable looping
