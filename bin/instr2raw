@@ -38,9 +38,9 @@ rawdir2wav(){
 # <file.wav/file.aiff>             <-- injects looppoints based on file.raw.txt 
 loopInject(){
   file="$1"
-  loopfile=$(echo "$file" | sed 's/\.wav/\.txt/g' )
-  wavfile=$(echo "$loopfile" | sed 's/\.txt/\.wav/g' )
-  aifffile=$(echo "$loopfile" | sed 's/\.txt/\.aiff/g' )
+  loopfile=$(echo "$file" | sed 's/\.wav$/\.txt/g' )
+  wavfile=$(echo "$loopfile" | sed 's/\.txt$/\.wav/g' )
+  aifffile=$(echo "$loopfile" | sed 's/\.txt$/\.aiff/g' )
   audiofile=""
   [[ -f "$loopfile" ]] && [[ $verbose == 1 ]] && (echo "[x] loopfile '$loopfile' found!" || echo "no loopfile '$loopfile' found")
   [[ ! -f "$loopfile" ]] && return 0
